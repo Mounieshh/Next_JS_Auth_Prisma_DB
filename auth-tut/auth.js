@@ -1,8 +1,13 @@
 import NextAuth from "next-auth";
-import Github from 'next-auth/providers/github';
+import authConfig from "./auth.config";
+
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { db } from "./lib/db";
 
 const nextAuthOptions = NextAuth({
-    providers: [Github]
+    adapter : PrismaAdapter(db),
+    session : {strategy : "jwt"},
+    ...authConfig
 });
 
 export const GET = nextAuthOptions.handlers.GET;
